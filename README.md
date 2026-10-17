@@ -1,73 +1,107 @@
-# VisionGen AI — Low-Memory Text-to-Image Studio
+# VisionGen AI — Text-to-Image Studio
 
-A portfolio-ready text-to-image app built with Python, Streamlit, Hugging Face Diffusers and Stable Diffusion 1.5. It includes prompt styling controls, negative prompts, resolution choices, seed reproducibility, saved image history and PNG downloads.
-
-## Hardware note (important)
-
-Designed to attempt CPU inference on an 8 GB RAM laptop using 512px images, one image per run, attention slicing and VAE slicing. CPU image generation may be very slow and can still run out of memory depending on the operating system and background applications. A dedicated GPU is not assumed. If generation is unstable, use a hosted GPU notebook (for example, a free/paid notebook service) rather than expecting fast local inference.
-
-The app intentionally does not load a separate LLM locally because keeping an LLM and a diffusion model in memory together is not a good fit for 8 GB RAM. Prompt enhancement is lightweight and rule-based. This can be extended later with an optional remote open-source LLM endpoint.
+VisionGen AI is a text-to-image generation application built using Python, Streamlit, Hugging Face Diffusers, and Stable Diffusion 1.5. It transforms text prompts into visual content through an interactive interface with customizable generation settings, prompt enhancement, and image management features.
 
 ## Features
 
-- Text-to-image generation using an open model
-- Prompt enhancement controls for style, lighting and composition
-- Negative prompts
-- 512x512, 512x384 and 384x512 output sizes
-- Adjustable inference steps and guidance
-- Fixed or random seed
-- Saved generation history and PNG download
-- CPU memory-saving settings
+- **AI Text-to-Image Generation:** Generate images from natural-language descriptions using Stable Diffusion 1.5.
+- **Prompt Enhancement:** Refine prompts using configurable visual styles, lighting, and composition.
+- **Negative Prompts:** Specify unwanted visual elements to guide image generation.
+- **Flexible Image Resolution:** Choose from square, landscape, and portrait formats.
+- **Generation Controls:** Adjust inference steps and prompt guidance to customize results.
+- **Seed Reproducibility:** Use fixed seeds to reproduce generation results or random seeds to explore variations.
+- **Image Gallery:** Browse recently generated images through the integrated generation history.
+- **PNG Downloads:** Save generated images for further use.
+- **Organized Output Management:** Automatically save generated images in the project’s `outputs/` directory.
+- **Interactive Interface:** Access generation controls, prompt previews, image results, and generation details through Streamlit.
 
-## Setup (Windows PowerShell)
+## Technology Stack
 
-1. Install Python 3.10 or 3.11 (64-bit).
-2. Extract this project folder.
-3. Open PowerShell inside the folder.
-4. Create and activate a virtual environment:
+| Technology | Purpose |
+|---|---|
+| Python | Application logic and image-generation workflow |
+| Streamlit | Interactive web interface |
+| Hugging Face Diffusers | Diffusion pipeline and image-generation operations |
+| Stable Diffusion 1.5 | Text-to-image generation model |
+| PyTorch | Model execution and tensor operations |
+| Pillow (PIL) | Image processing and PNG export |
+
+## Prerequisites
+
+- Python 3.10 or 3.11 (64-bit recommended)
+- Git
+- Internet connection for downloading model weights and dependencies
+- Sufficient storage and system resources for the model and generated images
+
+## Installation and Setup
+
+### Windows
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/pritam4343/VisionGen-AI.git
+cd VisionGen-AI
+```
+
+2. Create and activate a virtual environment:
 
 ```powershell
 py -3.11 -m venv .venv
 .\.venv\Scripts\Activate.ps1
+```
+
+3. Install the dependencies:
+
+```bash
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-5. Run the application:
+4. Launch the application:
 
-```powershell
+```bash
 streamlit run app.py
 ```
 
-The first run downloads the model weights from Hugging Face. A stable internet connection and free disk space are required. Later runs use the local model cache.
+### Linux and macOS
 
-## Setup (Linux/macOS)
+1. Clone the repository:
+
+```bash
+git clone https://github.com/pritam4343/VisionGen-AI.git
+cd VisionGen-AI
+```
+
+2. Create and activate a virtual environment:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
+```
+
+3. Install the dependencies and start the application:
+
+```bash
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 streamlit run app.py
 ```
 
-## Recommended settings for an 8 GB RAM laptop
+On the first launch, the application downloads the required model files from Hugging Face. Download time depends on the internet connection and model availability.
 
-- Resolution: 512 × 512
-- Inference steps: start at 5–8; increase to 12–20 only if stable
-- Generate one image at a time
-- Close browsers and other memory-heavy apps
-- Keep 10–15 GB free disk space for model cache and outputs
-- If possible, use a machine with a compatible GPU for much faster inference
+## How to Use
 
-## Troubleshooting
+1. Launch VisionGen AI in your browser.
+2. Enter a descriptive prompt specifying the subject, environment, visual style, and mood.
+3. Optionally provide a negative prompt to describe unwanted elements.
+4. Configure visual style, lighting, composition, resolution, inference steps, and prompt guidance.
+5. Select a random or fixed seed.
+6. Click **Generate Image**.
+7. Preview the generated result and review the generation details.
+8. Download the image as a PNG or revisit previous generations in the gallery.
 
-- **Out of memory:** close applications, reboot, use the smallest resolution and 5 steps, and check that the OS has a page file/swap enabled.
-- **Slow generation:** CPU diffusion is compute-intensive; this is expected without a GPU.
-- **Model download issue:** retry with a stable internet connection. Some model repositories may require accepting their model terms.
-- **PyTorch installation issue:** install the correct PyTorch build for your operating system from the official PyTorch installation selector, then install the remaining packages.
-
-## Project structure
+## Project Structure
 
 ```text
 VisionGen-AI/
@@ -75,22 +109,30 @@ VisionGen-AI/
 ├── requirements.txt
 ├── README.md
 ├── .gitignore
-└── outputs/          # generated PNGs (created automatically)
+└── outputs/
+    └── Generated PNG images
 ```
 
-## Portfolio extensions
+The `outputs/` directory is created automatically when the application starts.
 
-For a stronger AI Engineer portfolio, consider adding:
-- Optional prompt rewriting using a small open LLM through a remote endpoint
-- Image-to-image generation or inpainting
-- A small evaluation set comparing prompts/seeds and human-rated prompt adherence
-- Automated tests for prompt handling, settings and image-saving utilities
-- Docker support and a deployment guide
+## Potential Future Enhancements
 
-## Model and license
+- Optional LLM-based prompt rewriting
+- Image-to-image generation
+- Image inpainting and editing
+- User accounts and personalized generation history
+- Batch generation and image variations
+- Automated testing for prompt processing and image-saving utilities
+- Docker-based deployment
+- Cloud deployment and API integration
+- Image-quality evaluation and prompt-adherence testing
 
-The application uses `stable-diffusion-v1-5/stable-diffusion-v1-5` from Hugging Face Diffusers. Review the model card and license before commercial use or redistribution. Open weights do not automatically mean unrestricted commercial use.
+## Model and Licensing
+
+VisionGen AI uses the `stable-diffusion-v1-5/stable-diffusion-v1-5` model through Hugging Face Diffusers.
+
+Review the model card and applicable license before commercial use, redistribution, or deployment. Model usage and distribution are subject to the relevant license terms.
 
 ## Disclaimer
 
-This is a starter portfolio implementation. Image quality is probabilistic and not guaranteed to be perfect; hands, text, fine geometry and complex compositions can be imperfect.
+VisionGen AI is a portfolio project demonstrating text-to-image generation and interactive AI application development. Generated outputs may vary depending on prompts, model behavior, generation settings, and random seeds.
